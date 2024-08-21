@@ -1,0 +1,14 @@
+/* Add CSS for styling the links */
+.post-link {
+    display: block;
+    padding: 10px;
+    background-color: #f8f9fa;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    text-decoration: none;
+    color: #000;
+}
+
+.post-link:hover {
+    background-color: #e9ecef;
+}

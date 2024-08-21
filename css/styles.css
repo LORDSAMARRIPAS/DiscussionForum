@@ -1,0 +1,198 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f2f2f2;
+}
+
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 10px;
+    text-align: center;
+}
+
+main {
+    padding: 20px;
+}
+/* style for displaying buttons or links as buttons */
+.button{ 
+    display: block;
+    text-align: center;
+    color: #fff;
+    text-decoration: none;
+    padding: 0.5em;
+    background-color: #333;
+    border: 1px solid #fff;
+    border-radius: 5px;
+    margin-left: 1em;
+}
+.button:hover {
+    background-color: #fff;
+    color: #333;
+    transition: background-color 0.15s ease-in;
+}
+
+/* style for posts */
+.post {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+.post h2 {
+    margin-top: 0;
+}
+
+.post p {
+    margin-bottom: 5px;
+}
+
+.post .text {
+    display: block;
+    float: left;
+}
+
+.post .username {
+    display: block;
+    float: right;
+}
+
+.clearfix {
+    clear: both;
+}
+
+/* style for forum page bar */
+#forum-name{
+    float: left;
+}
+#forum-name a{
+    text-decoration: none;
+}
+#join-button{
+    float: left;
+}
+#join-button .button{
+    color: #fff;
+    background-color: #333;
+    border: 1px solid #fff;
+}
+#join-button .button:hover {
+    background-color: #fff;
+    color: #333;
+}
+#admin-link{
+    float: right;
+}
+#admin-link .button{
+    color: #3662ff;
+    background-color: #333;
+    border: 1px solid #3662ff;
+}
+#admin-link .button:hover {
+    background-color: #3662ff;
+    color: #fff;
+}
+/* style for admin page options */
+#delete-button{
+    color: #ff3636;
+    background-color: #333;
+    border: 1px solid #ff3636;
+}
+#delete-button:hover {
+    background-color: #ff3636;
+    color: #fff;
+}
+.delete-post{
+    font-size: 0.8em;
+    color: #ff3636;
+    background-color: #f2f2f2;
+    border: 1px solid #ff3636;
+}
+.delete-post:hover {
+    background-color: #ff3636;
+    color: #fff;
+}
+
+/* style for forms */
+form {
+    margin-bottom: 20px;
+}
+
+form input[type="text"],
+form textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+form button {
+    padding: 10px 20px;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+/* style for user icon image */
+#user-icon-large {
+    float: left;
+}
+
+.container {
+    max-width: 400px;
+    margin: 5% auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.container form input[type="text"]{
+    width: 94%;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+
+h1, h2 {
+    text-align: center;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.form-group .error{
+    margin-top: 0em;
+    color: #ff0000;
+}
+
+.form-group input {
+    width: 94%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.form-group button {
+    width: 100%;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.form-group button:hover {
+    background-color: #45a049;
+}
+
+/* style for form-group in register page */
