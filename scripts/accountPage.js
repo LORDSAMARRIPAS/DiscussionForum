@@ -4,7 +4,7 @@ function userInfo(){
     .then(data => {
         if(data[0]){
             for(var key in data){
-                $('#'+key).append(data[key]);
+                document.getElementById(key).textContent += data[key];
             }
         }
         else{

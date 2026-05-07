@@ -8,10 +8,12 @@ if(!isset($_SESSION['username'])){
 }else{
     $username = $_SESSION['username'];
 }
+require_once 'csrf.php';
 if($_SERVER['REQUEST_METHOD'] != 'POST' || !isset($_POST['forumname'])){
     header("location: ../views/Home.html");
     exit();
 }
+requireCsrf();
 $forumname = $_POST['forumname'];
 
 $pdo = connectdb();
@@ -42,11 +44,11 @@ if($user = $stmt->fetch()){
             exit();
         }
     }
-    header("location: ../views/forumPage.html?forumname=$forumname");
+    header("location: ../views/forumPage.html?forumname=" . urlencode($forumname));
     exit();
 }
 else{
-    header("location: ../views/forumPage.html?forumname=$forumname");
+    header("location: ../views/forumPage.html?forumname=" . urlencode($forumname));
     exit();
 }
 ?>

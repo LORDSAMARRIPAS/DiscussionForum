@@ -26,11 +26,17 @@
     </header>
     <main>
         <form id="postForm" method="post" action="../php/addPost.php">
+            <input type="hidden" name="csrf_token" id="csrf_token" value="">
             <input type="text" id="posttitle" name="posttitle" placeholder="Title" required><br>
             <textarea id="message" name="posttext" placeholder="Post Text" required></textarea><br>
             <input type="hidden" id="forumname" name="forumname" value=""><br>
             <button type="submit">Post</button>
         </form>
+        <script>
+            fetch('../php/getCsrfToken.php')
+                .then(r => r.json())
+                .then(d => { document.getElementById('csrf_token').value = d.csrf_token; });
+        </script>
         <div id="posts"></div>
     </main>
 

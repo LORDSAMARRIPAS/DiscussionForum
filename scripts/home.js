@@ -75,27 +75,30 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 function likePost(postId, likeButton) {
-    fetch("../php/likePost2.php", {
-        method: 'POST',
-        body: JSON.stringify({ postId: postId }),
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            console.log("Post liked successfully");
-            // Disable the like button after liking the post
-            likeButton.disabled = true;
-        } else {
-            if (data.message === "User not logged in.") {
-                window.location.href = "../views/login.html";
-            }
-            console.error("Failed to like post:", data.message);
-        }
-    })
-    .catch(error => {
-        console.error('Error liking post:', error);
-    });
+    fetch('../php/getCsrfToken.php')
+        .then(r => r.json())
+        .then(t => {
+            fetch("../php/likePost2.php", {
+                method: 'POST',
+                body: JSON.stringify({ postId: postId, csrf_token: t.csrf_token }),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    console.log("Post liked successfully");
+                    likeButton.disabled = true;
+                } else {
+                    if (data.message === "User not logged in.") {
+                        window.location.href = "../views/login.html";
+                    }
+                    console.error("Failed to like post:", data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error liking post:', error);
+            });
+        });
 }

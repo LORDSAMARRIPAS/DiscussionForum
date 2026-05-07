@@ -1,8 +1,6 @@
 <?php
-// likePost.php
-
-// Include the database connection file
 require_once 'connection.php';
+require_once 'csrf.php';
 
 // Function to redirect to the login page
 function redirectToLogin() {
@@ -14,6 +12,12 @@ function redirectToLogin() {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Decode the JSON data sent in the request body
     $data = json_decode(file_get_contents("php://input"), true);
+
+    // Validate CSRF token from JSON
+    if (!isset($data['csrf_token']) || !validateCsrfToken($data['csrf_token'])) {
+        echo json_encode(['success' => false, 'message' => 'Invalid CSRF token.']);
+        exit;
+    }
 
     // Check if the required data (postId) is present in the JSON data
     if (isset($data['postId'])) {

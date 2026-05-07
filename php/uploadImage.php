@@ -1,21 +1,41 @@
 <?php
 require_once 'connection.php';
+require_once 'csrf.php';
+session_start();
 if ($_SERVER['REQUEST_METHOD'] != 'POST' || !isset($_FILES['image'])) {
     echo "Error uploading image";
     exit();
 }
+requireCsrf();
+
+$allowedMimeTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+$allowedExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+
 // Check if the file was uploaded without errors
 if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
-    // Get the temporary file path
     $tmpFilePath = $_FILES['image']['tmp_name'];
+    $origName = $_FILES['image']['name'];
+    $extension = strtolower(pathinfo($origName, PATHINFO_EXTENSION));
+
+    // Validate MIME type using finfo
+    $finfo = finfo_open(FILEINFO_MIME_TYPE);
+    $mimeType = finfo_file($finfo, $tmpFilePath);
+    finfo_close($finfo);
+
+    if (!in_array($mimeType, $allowedMimeTypes)) {
+        echo "Error: Invalid file type. Only JPEG, PNG, GIF, and WebP images are allowed.";
+        exit();
+    }
+
+    if (!in_array($extension, $allowedExtensions)) {
+        echo "Error: Invalid file extension.";
+        exit();
+    }
 
     // Read the file contents
     $fileContent = file_get_contents($tmpFilePath);
 
-    // Check if the file is an image
     if (getimagesize($tmpFilePath)) {
-        // Convert the file contents to a blob
-        session_start();
         $username = $_SESSION['username'];
         $pdo = connectdb();
 

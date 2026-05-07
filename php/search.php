@@ -42,8 +42,8 @@
     <div class="search-results">
       <?php if (!empty($_SESSION['search_results'])): ?>
         <?php foreach ($_SESSION['search_results'] as $result): ?>
-          <div class="search-result-item" onclick="window.location='../views/forumPage.html?forumname=<?php echo $result['forumname']; ?>'">
-            <a href="../views/forumPage.html?forumname=<?php echo $result['forumname']; ?>"><?php echo $result['forumname']; ?></a>
+          <div class="search-result-item" onclick="window.location='../views/forumPage.html?forumname=<?php echo urlencode($result['forumname']); ?>'">
+            <a href="../views/forumPage.html?forumname=<?php echo urlencode($result['forumname']); ?>"><?php echo htmlspecialchars($result['forumname']); ?></a>
           </div>
         <?php endforeach; ?>
         <?php unset($_SESSION['search_results']); ?>

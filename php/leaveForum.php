@@ -8,8 +8,14 @@ if(!isset($_SESSION['username'])){
 }else{
     $username = $_SESSION['username'];
 }
-if($_SERVER['REQUEST_METHOD'] != 'GET' || !isset($_GET['forumname'])){
+require_once 'csrf.php';
+if($_SERVER['REQUEST_METHOD'] != 'GET' || !isset($_GET['forumname']) || !isset($_GET['csrf_token'])){
     header("location: ../views/Home.html");
+    exit();
+}
+if (!validateCsrfToken($_GET['csrf_token'])) {
+    header('HTTP/1.1 403 Forbidden');
+    echo 'Invalid CSRF token.';
     exit();
 }
 $forumname = $_GET['forumname'];
@@ -24,7 +30,8 @@ $stmt = $pdo->prepare($sql);
 $stmt->execute([$forumname, $username]);
 if($user = $stmt->fetch()){
     if($user['ownername'] == $username){
-        echo "<script>alert('Owner cannot leave forum without transferring ownership or deleting forum.'); window.location.href = '../views/forumPage.html?forumname=$forumname';</script>";
+        $safe = htmlspecialchars(urlencode($forumname));
+        echo "<script>alert('Owner cannot leave forum without transferring ownership or deleting forum.'); window.location.href = '../views/forumPage.html?forumname=$safe';</script>";
         exit();
     }
     else{
@@ -33,11 +40,11 @@ if($user = $stmt->fetch()){
         $stmt->execute([$forumname, $username]);
     }
 
-    header("location: ../views/forumPage.html?forumname=$forumname");
+    header("location: ../views/forumPage.html?forumname=" . urlencode($forumname));
     exit();
 }
 else{
-    header("location: ../views/forumPage.html?forumname=$forumname");
+    header("location: ../views/forumPage.html?forumname=" . urlencode($forumname));
     exit();
 }
 ?>

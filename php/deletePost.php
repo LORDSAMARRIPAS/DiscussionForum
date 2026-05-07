@@ -8,10 +8,12 @@ if(!isset($_SESSION['username'])){
 }else{
     $username = $_SESSION['username'];
 }
+require_once 'csrf.php';
 if($_SERVER['REQUEST_METHOD'] != 'POST' || !isset($_POST['forumname']) || !isset($_POST['postid'])){
     header("location: ../views/Home.html");
     exit();
 }
+requireCsrf();
 $forumname = $_POST['forumname'];
 $postid = $_POST['postid'];
 
@@ -44,7 +46,7 @@ $sql = "DELETE FROM posts WHERE forumname = ? AND postid = ?";
 $stmt = $pdo->prepare($sql);
 $stmt->execute([$forumname, $postid]);
 
-header("Location: {$_SERVER['HTTP_REFERER']}");//redirect back to the previous page
+header("Location: ../views/forumPage.html?forumname=" . urlencode($forumname));
 exit();
     
 ?>

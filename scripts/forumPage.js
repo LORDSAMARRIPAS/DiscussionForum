@@ -1,5 +1,7 @@
 var $_GET = {},
 args = location.search.substr(1).split(/&/);
+var csrfToken = '';
+
 document.addEventListener("DOMContentLoaded", function() {
 
     for (var i=0; i<args.length; ++i) {
@@ -13,6 +15,9 @@ document.addEventListener("DOMContentLoaded", function() {
     }
     document.getElementById("forum-name").textContent = $_GET["forumname"];
     document.getElementById("forumname").value = $_GET["forumname"];
+    fetch('../php/getCsrfToken.php')
+        .then(r => r.json())
+        .then(d => { csrfToken = d.csrf_token; });
 
 
     // JavaScript for getting posts from the database and displaying them
@@ -70,9 +75,9 @@ document.addEventListener("DOMContentLoaded", function() {
                 });
             }
             if(!inforum){
-                document.getElementById("join-button").innerHTML = "<a class='button' href='../php/joinForum.php?forumname="+encodeURIComponent($_GET["forumname"])+"'>Join</a>";
+                document.getElementById("join-button").innerHTML = "<a class='button' href='../php/joinForum.php?forumname="+encodeURIComponent($_GET["forumname"])+"&csrf_token="+encodeURIComponent(csrfToken)+"'>Join</a>";
             }else{
-                document.getElementById("join-button").innerHTML = "<a class='button' href='../php/leaveForum.php?forumname="+encodeURIComponent($_GET["forumname"])+"'>Leave</a>";
+                document.getElementById("join-button").innerHTML = "<a class='button' href='../php/leaveForum.php?forumname="+encodeURIComponent($_GET["forumname"])+"&csrf_token="+encodeURIComponent(csrfToken)+"'>Leave</a>";
             }
         });
         // JavaScript for getting admin status and displaying link to admin page
@@ -93,29 +98,32 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 function likePost(postId, likeButton) {
-    fetch("../php/likePost2.php", {
-        method: 'POST',
-        body: JSON.stringify({ postId: postId }),
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            console.log("Post liked successfully");
-            // Disable the like button after liking the post
-            likeButton.disabled = true;
-        } else {
-            if(data.message === "User not logged in.") {
-                window.location.href = "../views/login.html";
-            }
-            console.error("Failed to like post:", data.message);
-        }
-    })
-    .catch(error => {
-        console.error('Error liking post:', error);
-    });
+    fetch('../php/getCsrfToken.php')
+        .then(r => r.json())
+        .then(t => {
+            fetch("../php/likePost2.php", {
+                method: 'POST',
+                body: JSON.stringify({ postId: postId, csrf_token: t.csrf_token }),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    console.log("Post liked successfully");
+                    likeButton.disabled = true;
+                } else {
+                    if(data.message === "User not logged in.") {
+                        window.location.href = "../views/login.html";
+                    }
+                    console.error("Failed to like post:", data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error liking post:', error);
+            });
+        });
 }
 
 

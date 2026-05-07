@@ -13,7 +13,10 @@ function getErrors(){
         .then(res => res.json())
         .then(data => {
             for(var key in data['errors']){
-                $('#'+key).after('<p class="error">' + data['errors'][key] + '</p>');
+                var errorEl = document.createElement('p');
+                errorEl.className = 'error';
+                errorEl.textContent = data['errors'][key];
+                document.getElementById(key).after(errorEl);
             }
         });
     }

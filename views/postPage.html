@@ -23,11 +23,17 @@
         <div id="post"></div>
         <h2>Comments</h2>
         <form id="postComment" method="post" action="../php/addComment.php">
+            <input type="hidden" name="csrf_token" id="csrf_token" value="">
             <textarea id="messagetext" name="messagetext" placeholder="Type Your Comment Here..." required></textarea><br>
             <input type="hidden" id="postId" name="postId" value=""><br>
             <input type="hidden" id="forumname" name="forumname" value=""><br>
             <button type="submit">Comment</button>
         </form>
+        <script>
+            fetch('../php/getCsrfToken.php')
+                .then(r => r.json())
+                .then(d => { document.getElementById('csrf_token').value = d.csrf_token; });
+        </script>
         <div id="comments"></div>
     </main>
 

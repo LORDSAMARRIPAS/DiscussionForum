@@ -8,11 +8,12 @@ if(!isset($_SESSION['username'])){
 }else{
     $username = $_SESSION['username'];
 }
+require_once 'csrf.php';
 if(!$_SERVER['REQUEST_METHOD'] === 'POST' || !isset($_POST['messagetext']) || !isset($_POST['postId']) || !isset($_POST['forumname'])){
     header("location: ../views/forumPage.html");
     exit();
 }
-
+requireCsrf();
 $messagetext = $_POST['messagetext'];
 $postId = $_POST['postId'];
 $forumname = $_POST['forumname'];
@@ -28,7 +29,7 @@ $sql = "INSERT INTO postmessages (forumname, postid, username, messagetext, post
 $stmt = $pdo->prepare($sql);
 $stmt->execute([$forumname, $postId, $username, $messagetext, Date("Y-m-d H:i:s")]);
 
-header("location: ../views/postPage.html?postId=$postId&forumname=$forumname");
+header("location: ../views/postPage.html?postId=" . urlencode($postId) . "&forumname=" . urlencode($forumname));
 exit();
 
 ?>

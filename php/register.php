@@ -1,10 +1,12 @@
 <?php
 require_once 'connection.php';
+require_once 'csrf.php';
 session_start();
 if($_SERVER['REQUEST_METHOD'] != 'POST' || !isset($_POST['username']) || !isset($_POST['password']) || !isset($_POST['confirmPassword']) || !isset($_POST['email']) || !isset($_POST['phone']) || !isset($_POST['firstName']) || !isset($_POST['lastName'])){
     header("location: ../views/register.html");
     exit();
 }
+requireCsrf();
 $username = $_POST['username'];
 $pass = $_POST['password'];
 $pass2 = $_POST['confirmPassword'];

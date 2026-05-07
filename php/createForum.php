@@ -8,10 +8,12 @@ if(!isset($_SESSION['username'])){
 }else{
     $username = $_SESSION['username'];
 }
+require_once 'csrf.php';
 if($_SERVER['REQUEST_METHOD'] != 'POST' || !isset($_POST['forumname'])){
     header("location: ../views/createForum.html");
     exit();
 }
+requireCsrf();
 $forumname = $_POST['forumname'];
 
 if(!preg_match("/^[a-zA-Z0-9'_ -]{1,30}$/", $forumname)){
@@ -45,7 +47,7 @@ else{
     $stmt = $pdo->prepare($sql);
     $stmt->execute([$username,$forumname,True, Date("Y-m-d H:i:s")]);
 
-    header("location: ../views/forumPage.html?forumname=$forumname");
+    header("location: ../views/forumPage.html?forumname=" . urlencode($forumname));
     exit();
 }
 ?>

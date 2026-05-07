@@ -8,10 +8,12 @@ if(!isset($_SESSION['username'])){
 }else{
     $username = $_SESSION['username'];
 }
+require_once 'csrf.php';
 if(!$_SERVER['REQUEST_METHOD'] === 'POST' || !isset($_POST['posttitle']) || !isset($_POST['posttext']) || !isset($_POST['forumname'])){
     header("location: ../views/forumPage.html");
     exit();
 }
+requireCsrf();
 $posttitle = $_POST['posttitle'];
 $posttext = $_POST['posttext'];
 $forumname = $_POST['forumname'];
@@ -28,7 +30,8 @@ $stmt = $pdo->prepare($sql);
 $stmt->execute([$_SESSION['username'], $forumname]);
 $forums = $stmt->fetchAll();
 if (count($forums) == 0) {
-    echo "<script>alert('You must join the forum before adding a post.'); window.location.href = '../views/forumPage.html?forumname=$forumname';</script>";
+    $safe = htmlspecialchars(urlencode($forumname));
+    echo "<script>alert('You must join the forum before adding a post.'); window.location.href = '../views/forumPage.html?forumname=$safe';</script>";
     exit();
 }
 
@@ -36,7 +39,7 @@ $sql = "INSERT INTO posts (forumname, username, posttitle, posttext, postdate) V
 $stmt = $pdo->prepare($sql);
 $stmt->execute([$forumname,$username, $posttitle, $posttext, Date("Y-m-d H:i:s")]);
 
-header("location: ../views/forumPage.html?forumname=$forumname");
+header("location: ../views/forumPage.html?forumname=" . urlencode($forumname));
 exit();
 
 ?>

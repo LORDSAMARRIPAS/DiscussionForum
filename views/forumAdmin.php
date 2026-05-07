@@ -1,5 +1,6 @@
 <?php
 require_once '../php/connection.php';
+require_once '../php/csrf.php';
 session_start();
 
 if(!isset($_SESSION['username'])){
@@ -58,9 +59,15 @@ if($stmt->fetch()['siteadmin'] != 1){
     <header>
         <h1 style="display: inline;" id="forum-name"><?php echo "<a href='forumPage.html?forumname=" . urlencode($forumname) . "'>" . htmlspecialchars($forumname) . "</a>" ?> Admin</h1>
         <form method="post" action="../php/deleteForum.php">
-            <input type="hidden" id="forumname" name="forumname" value="<?php echo $forumname ?>">
+            <input type="hidden" name="csrf_token" id="csrf_token" value="">
+            <input type="hidden" id="forumname" name="forumname" value="<?php echo htmlspecialchars($forumname) ?>">
             <button type="submit" id="delete-button" class="button" onclick="return confirm('Are you sure you want to delete this forum?')">Delete</button>
         </form>
+        <script>
+            fetch('../../php/getCsrfToken.php')
+                .then(r => r.json())
+                .then(d => { document.getElementById('csrf_token').value = d.csrf_token; });
+        </script>
         <div class="clearfix"></div>
     </header>
     <main>
@@ -89,6 +96,7 @@ if($stmt->fetch()['siteadmin'] != 1){
                 echo "<td>" . htmlspecialchars($row["posttext"]) . "</td>";
                 echo "<td>" . htmlspecialchars($row["postdate"]) . "</td>";
                 echo "<td> <form method='post' action='../php/deletePost.php'>
+                    <input type='hidden' name='csrf_token' value='" . htmlspecialchars(getCsrfToken()) . "'>
                     <input type='hidden' name='forumname' value='" . htmlspecialchars($forumname) . "'>
                     <input type='hidden' name='postid' value='" . htmlspecialchars($postid) . "'>
                     <button type='submit' class='delete-post button' onclick='return confirm(\"Are you sure you want to delete this post?\")'>Delete</button>

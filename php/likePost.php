@@ -8,11 +8,12 @@ if(!isset($_SESSION['username'])){
 }else{
     $username = $_SESSION['username'];
 }
+require_once 'csrf.php';
 if(!$_SERVER['REQUEST_METHOD'] === 'POST' || !isset($_POST['postid'])){
-    
-    header("location: ../views/forumPage.html?forumname=Apex");
+    header("location: ../views/forumPage.html");
     exit();
 }
+requireCsrf();
 $postid = $_POST['postid'];
 
 $pdo = connectdb();
@@ -26,7 +27,7 @@ $stmt = $pdo->prepare($sql);
 $stmt->execute([$username, $postid]);
 
 
-header("location: ../php/Home.php");
+header("location: ../views/Home.html");
 exit();
 
 ?>

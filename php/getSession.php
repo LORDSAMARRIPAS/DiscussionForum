@@ -1,5 +1,7 @@
 <?php
 session_start();
-echo(json_encode($_SESSION));
+$safe = $_SESSION;
+unset($safe['csrf_token']);
+echo(json_encode($safe));
 unset($_SESSION['errors']);
 ?>
