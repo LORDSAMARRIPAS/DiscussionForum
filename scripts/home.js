@@ -10,8 +10,8 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     // JavaScript for getting posts from the database and displaying them
-    var postsContainer = $("#posts");
-    postsContainer.empty();
+    var postsContainer = document.getElementById("posts");
+    postsContainer.innerHTML = '';
 
     // Fetch liked posts for the current user
     fetch("../php/getLikedPosts.php")
@@ -56,11 +56,10 @@ document.addEventListener("DOMContentLoaded", function() {
                             forumLink.textContent = 'In: ' + row["forumname"];
                             forumLink.classList.add("forum-link");
     
-                            // Appending the anchor tag, forum link, and like button to the post container
-                            postContainer.append(forumLink);
-                            postContainer.append(postLink);
-                            postContainer.append(likeButton);
-                            postsContainer.append(postContainer);
+                            postContainer.appendChild(forumLink);
+                            postContainer.appendChild(postLink);
+                            postContainer.appendChild(likeButton);
+                            postsContainer.appendChild(postContainer);
                         });
                     }
 

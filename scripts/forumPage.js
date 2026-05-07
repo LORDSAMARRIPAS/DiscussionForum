@@ -20,9 +20,8 @@ document.addEventListener("DOMContentLoaded", function() {
         .then(d => { csrfToken = d.csrf_token; });
 
 
-    // JavaScript for getting posts from the database and displaying them
-    postsContainer = $("#posts");
-    postsContainer.empty();
+    var postsContainer = document.getElementById("posts");
+    postsContainer.innerHTML = '';
 
     fetch("../php/getPosts.php?forumname=" + $_GET["forumname"])
         .then(res => res.json())
@@ -52,10 +51,9 @@ document.addEventListener("DOMContentLoaded", function() {
                         likePost(row['postid'], likeButton);
                     });
     
-                    // Appending the anchor tag and like button to the post container
-                    postContainer.append(postLink);
-                    postContainer.append(likeButton);
-                    postsContainer.append(postContainer);
+                    postContainer.appendChild(postLink);
+                    postContainer.appendChild(likeButton);
+                    postsContainer.appendChild(postContainer);
                 });
             }
     
@@ -128,12 +126,11 @@ function likePost(postId, likeButton) {
 
 
 function refreshPosts(){
-        // JavaScript for getting posts from database and displaying them
-        postsContainer = $("#posts");
+        var postsContainer = document.getElementById("posts");
         fetch("../php/getPosts.php?forumname=" + $_GET["forumname"])
         .then(res => res.json())
         .then(data => {
-            postsContainer.empty();
+            postsContainer.innerHTML = '';
             data.forEach(function(row) {
                 var postContainer = document.createElement("div");
                 postContainer.classList.add("post");
@@ -158,10 +155,9 @@ function refreshPosts(){
                     likePost(row['postid'], likeButton);
                 });
 
-                // Appending the anchor tag and like button to the post container
-                postContainer.append(postLink);
-                postContainer.append(likeButton);
-                postsContainer.append(postContainer);
+                postContainer.appendChild(postLink);
+                postContainer.appendChild(likeButton);
+                postsContainer.appendChild(postContainer);
             });
         });
 }

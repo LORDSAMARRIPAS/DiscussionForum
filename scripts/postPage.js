@@ -16,8 +16,8 @@ document.addEventListener("DOMContentLoaded", function() {
     document.getElementById("forumname").value = $_GET["forumname"];
 
     // JavaScript for getting posts from database and displaying them
-    var post = $("#post");
-    post.empty();
+    var post = document.getElementById("post");
+    post.innerHTML = '';
     fetch("../php/getPost.php?postId=" + $_GET["postId"])
     .then(res => res.json())
     .then(data => {
@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", function() {
             textEl.textContent = row['posttext'];
             pst.appendChild(titleEl);
             pst.appendChild(textEl);
-            post.append(pst);
+            post.appendChild(pst);
         });
     });
 
@@ -45,12 +45,12 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 function refreshComments() {
-    var comments = $("#comments");
+    var comments = document.getElementById("comments");
 
     fetch("../php/getComments.php?postId=" + $_GET["postId"])
     .then(res => res.json())
     .then(data => {
-        comments.empty();
+        comments.innerHTML = '';
         if(data[0]==0){
             window.location.href = "../views/Home.html";
         }
@@ -63,7 +63,7 @@ function refreshComments() {
             msgEl.textContent = row['messagetext'];
             comment.appendChild(userEl);
             comment.appendChild(msgEl);
-            comments.append(comment); 
+            comments.appendChild(comment); 
         });
     });
 }
