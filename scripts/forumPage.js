@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", function() {
     if ($_GET["forumname"] == null) {
         window.location.href = "../views/Home.html"
     }
-    document.getElementById("forum-name").innerHTML = $_GET["forumname"];
+    document.getElementById("forum-name").textContent = $_GET["forumname"];
     document.getElementById("forumname").value = $_GET["forumname"];
 
 
@@ -31,7 +31,12 @@ document.addEventListener("DOMContentLoaded", function() {
                     var postLink = document.createElement("a");
                     postLink.href = "postPage.html?postId=" + row['postid'] + "&forumname=" + $_GET["forumname"];
                     postLink.classList.add("post-link"); // Add a class to the anchor tag for styling
-                    postLink.innerHTML = "<h2>" + row['posttitle'] + "</h2><p>" + row['posttext'] + "</p>";
+                    var titleEl = document.createElement("h2");
+                    titleEl.textContent = row['posttitle'];
+                    var textEl = document.createElement("p");
+                    textEl.textContent = row['posttext'];
+                    postLink.appendChild(titleEl);
+                    postLink.appendChild(textEl);
     
                     // Add like button with appropriate status
                     var likeButton = document.createElement("button");
@@ -48,7 +53,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     postsContainer.append(postContainer);
                 });
             }
-
+    
         })
         .catch(error => {
             console.error('Error fetching posts:', error);
@@ -65,17 +70,17 @@ document.addEventListener("DOMContentLoaded", function() {
                 });
             }
             if(!inforum){
-                document.getElementById("join-button").innerHTML = "<a class='button' href='../php/joinForum.php?forumname="+$_GET["forumname"]+"'>Join</a>";
+                document.getElementById("join-button").innerHTML = "<a class='button' href='../php/joinForum.php?forumname="+encodeURIComponent($_GET["forumname"])+"'>Join</a>";
             }else{
-                document.getElementById("join-button").innerHTML = "<a class='button' href='../php/leaveForum.php?forumname="+$_GET["forumname"]+"'>Leave</a>";
+                document.getElementById("join-button").innerHTML = "<a class='button' href='../php/leaveForum.php?forumname="+encodeURIComponent($_GET["forumname"])+"'>Leave</a>";
             }
         });
         // JavaScript for getting admin status and displaying link to admin page
-        fetch("../php/getAdmin.php?forumname="+$_GET["forumname"])
+        fetch("../php/getAdmin.php?forumname="+encodeURIComponent($_GET["forumname"]))
         .then(res => res.json())
         .then(data => {
             if(data[0]!=0){
-                document.getElementById("admin-link").innerHTML = "<a class='button' href='../views/forumAdmin.php?forumname="+$_GET["forumname"]+"'>Admin</a>";
+                document.getElementById("admin-link").innerHTML = "<a class='button' href='../views/forumAdmin.php?forumname="+encodeURIComponent($_GET["forumname"])+"'>Admin</a>";
             }
         });
     
@@ -129,7 +134,12 @@ function refreshPosts(){
                 var postLink = document.createElement("a");
                 postLink.href = "postPage.html?postId=" + row['postid'] + "&forumname=" + $_GET["forumname"];
                 postLink.classList.add("post-link"); // Add a class to the anchor tag for styling
-                postLink.innerHTML = "<h2>" + row['posttitle'] + "</h2><p>" + row['posttext'] + "</p>";
+                var titleEl = document.createElement("h2");
+                titleEl.textContent = row['posttitle'];
+                var textEl = document.createElement("p");
+                textEl.textContent = row['posttext'];
+                postLink.appendChild(titleEl);
+                postLink.appendChild(textEl);
 
                 // Add like button with appropriate status
                 var likeButton = document.createElement("button");

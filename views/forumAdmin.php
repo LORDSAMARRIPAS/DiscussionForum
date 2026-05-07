@@ -51,12 +51,12 @@ if($stmt->fetch()['siteadmin'] != 1){
 
     </script>
 
-    <title><?php $forumname ?> Admin</title>
+    <title><?php echo htmlspecialchars($forumname) ?> Admin</title>
 </head>
 <body>
 
     <header>
-        <h1 style="display: inline;" id="forum-name"><?php echo "<a href='forumPage.html?forumname=$forumname'>$forumname</a>" ?> Admin</h1>
+        <h1 style="display: inline;" id="forum-name"><?php echo "<a href='forumPage.html?forumname=" . urlencode($forumname) . "'>" . htmlspecialchars($forumname) . "</a>" ?> Admin</h1>
         <form method="post" action="../php/deleteForum.php">
             <input type="hidden" id="forumname" name="forumname" value="<?php echo $forumname ?>">
             <button type="submit" id="delete-button" class="button" onclick="return confirm('Are you sure you want to delete this forum?')">Delete</button>
@@ -82,15 +82,15 @@ if($stmt->fetch()['siteadmin'] != 1){
             while ($row = $stmt->fetch()) {
                 $postid = $row["postid"];
                 echo "<tr>";
-                echo "<td>$postid</td>";
-                echo "<td>" . $row["username"] . "</td>";
-                echo "<td>" . $forumname . "</td>";
-                echo "<td>" . $row["posttitle"] . "</td>";
-                echo "<td>" . $row["posttext"] . "</td>";
-                echo "<td>" . $row["postdate"] . "</td>";
+                echo "<td>" . htmlspecialchars($postid) . "</td>";
+                echo "<td>" . htmlspecialchars($row["username"]) . "</td>";
+                echo "<td>" . htmlspecialchars($forumname) . "</td>";
+                echo "<td>" . htmlspecialchars($row["posttitle"]) . "</td>";
+                echo "<td>" . htmlspecialchars($row["posttext"]) . "</td>";
+                echo "<td>" . htmlspecialchars($row["postdate"]) . "</td>";
                 echo "<td> <form method='post' action='../php/deletePost.php'>
-                    <input type='hidden' name='forumname' value='$forumname'>
-                    <input type='hidden' name='postid' value='$postid'>
+                    <input type='hidden' name='forumname' value='" . htmlspecialchars($forumname) . "'>
+                    <input type='hidden' name='postid' value='" . htmlspecialchars($postid) . "'>
                     <button type='submit' class='delete-post button' onclick='return confirm(\"Are you sure you want to delete this post?\")'>Delete</button>
                     </form></td>";
                 echo "</tr>";

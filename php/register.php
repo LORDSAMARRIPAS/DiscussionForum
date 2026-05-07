@@ -54,7 +54,7 @@ if($stmt->fetch()){
     exit();
 }
 else{
-    $pass = md5($pass);
+    $pass = password_hash($pass, PASSWORD_DEFAULT);
     $sql = "INSERT INTO users (username, pass, siteadmin, startdate, email, phone, firstname, lastname) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
     $stmt = $pdo->prepare($sql);
     $stmt->execute([$username,$pass, false, Date("Y-m-d"),$email,$phone,$firstname,$lastname]);

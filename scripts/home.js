@@ -29,7 +29,12 @@ document.addEventListener("DOMContentLoaded", function() {
                             var postLink = document.createElement("a");
                             postLink.href = "postPage.html?postId=" + row['postid'] + "&forumname=" + row["forumname"];
                             postLink.classList.add("post-link"); // Add a class to the anchor tag for styling
-                            postLink.innerHTML = "<h2>" + row['posttitle'] + "</h2><p>" + row['posttext'] + "</p>";
+                            var titleEl = document.createElement("h2");
+                            titleEl.textContent = row['posttitle'];
+                            var textEl = document.createElement("p");
+                            textEl.textContent = row['posttext'];
+                            postLink.appendChild(titleEl);
+                            postLink.appendChild(textEl);
     
                             // Add like button with appropriate status
                             var likeButton = document.createElement("button");

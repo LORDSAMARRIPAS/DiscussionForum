@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", function() {
         window.location.href = "../views/accountPage.html"
     }
 
-    document.getElementById("posttitle").innerHTML = $_GET["postId"];
+    document.getElementById("posttitle").textContent = $_GET["postId"];
     document.getElementById("postId").value = $_GET["postId"];
     document.getElementById("forumname").value = $_GET["forumname"];
 
@@ -28,7 +28,12 @@ document.addEventListener("DOMContentLoaded", function() {
             console.log(row['posttitle']);
             var pst = document.createElement("div");
             pst.classList.add("post");
-            pst.innerHTML = "<h2>" + row['posttitle'] + "</h2><p>" + row['posttext'] + "</p>";
+            var titleEl = document.createElement("h2");
+            titleEl.textContent = row['posttitle'];
+            var textEl = document.createElement("p");
+            textEl.textContent = row['posttext'];
+            pst.appendChild(titleEl);
+            pst.appendChild(textEl);
             post.append(pst);
         });
     });
@@ -52,7 +57,12 @@ function refreshComments() {
         data.forEach(function(row) {
             var comment = document.createElement("div");
             comment.classList.add("post");
-            comment.innerHTML = "<h2>" + row['username'] + "</h2><p>" + row['messagetext'] + "</p>";
+            var userEl = document.createElement("h2");
+            userEl.textContent = row['username'];
+            var msgEl = document.createElement("p");
+            msgEl.textContent = row['messagetext'];
+            comment.appendChild(userEl);
+            comment.appendChild(msgEl);
             comments.append(comment); 
         });
     });

@@ -7,14 +7,13 @@ if($_SERVER['REQUEST_METHOD'] != 'POST' || !isset($_POST['username']) || !isset(
 }
 $username = $_POST['username'];
 $pass = $_POST['password'];
-$pass = md5($pass);
 
 $pdo = connectdb();
 $sql = "SELECT pass FROM users WHERE username = ?";
 $stmt = $pdo->prepare($sql);
 $stmt->execute([$username]);
 if($x = $stmt->fetch()){
-    if($pass===$x['pass']){
+    if(password_verify($pass, $x['pass'])){
         $_SESSION['username']=$username;
         header("location: ../views/accountPage.html");
         exit();
