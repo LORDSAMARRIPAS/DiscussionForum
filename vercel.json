@@ -1,0 +1,44 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "php/**/*.php",
+      "use": "@vercel/php"
+    },
+    {
+      "src": "views/**/*.html",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "css/**/*",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "scripts/**/*",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "drawable/**/*",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "index.html",
+      "use": "@vercel/static"
+    }
+  ],
+  "routes": [
+    { "src": "/", "dest": "/index.html" },
+    { "src": "/views/(.*)", "dest": "/views/$1" },
+    { "src": "/php/(.*)", "dest": "/php/$1" },
+    { "src": "/css/(.*)", "dest": "/css/$1" },
+    { "src": "/scripts/(.*)", "dest": "/scripts/$1" },
+    { "src": "/drawable/(.*)", "dest": "/drawable/$1" },
+    { "src": "/sql/(.*)", "dest": "/sql/$1" }
+  ],
+  "env": {
+    "DB_HOST": "@db_host",
+    "DB_NAME": "@db_name",
+    "DB_USER": "@db_user",
+    "DB_PASS": "@db_pass"
+  }
+}

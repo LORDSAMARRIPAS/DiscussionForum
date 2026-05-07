@@ -61,7 +61,7 @@ else{
     $stmt = $pdo->prepare($sql);
     $stmt->execute([$username,$pass, false, Date("Y-m-d"),$email,$phone,$firstname,$lastname]);
 
-    $_SESSION['username']=$x['username'];
+    $_SESSION['username']=$username;
     header("location: ../views/accountPage.html");
     exit();
 }

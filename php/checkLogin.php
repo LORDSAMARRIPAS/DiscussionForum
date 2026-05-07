@@ -1,6 +1,6 @@
 <?php
 session_start();
-if(!$_SESSION['username']){
+if(!isset($_SESSION['username'])){
     header("location: ../views/login.html");
     exit();
 }
